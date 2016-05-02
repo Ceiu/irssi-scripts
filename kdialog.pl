@@ -27,6 +27,7 @@ $VERSION = '0.1.2';
 
 sub priv_msg {
     my ($server, $msg, $nick, $address) = @_;
+
     kde_print("Private Message", "$nick: $msg")
 }
 
@@ -36,6 +37,7 @@ sub priv_msg {
 
 sub hilight {
     my ($dest, $text, $stripped) = @_;
+
     if ($dest->{level} & MSGLEVEL_HILIGHT) {
         kde_print($dest->{target}, $stripped);
     }
@@ -47,6 +49,9 @@ sub hilight {
 
 sub kde_print {
     my ($title, $text) = @_;
+
+    $title =~ s/\\/\\\\/g;
+    $text =~ s/\\/\\\\/g;
 
     my @cmd_args = ("--title", "Irssi: $title", "--passivepopup", $text);
     system("kdialog", @cmd_args);
