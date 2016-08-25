@@ -48,13 +48,13 @@ sub hilight {
 #--------------------------------------------------------------------
 
 sub kde_print {
-    my ($title, $text) = @_;
+    my ($title, $text, $output) = @_;
 
     $title =~ s/\\/\\\\/g;
     $text =~ s/\\/\\\\/g;
+    $output = `kdialog --title "Irssi: $title" --passivepopup "$text"`;
 
-    my @cmd_args = ("--title", "Irssi: $title", "--passivepopup", $text);
-    system("kdialog", @cmd_args);
+    return;
 }
 
 #--------------------------------------------------------------------
