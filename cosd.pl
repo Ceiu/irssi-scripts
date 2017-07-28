@@ -64,10 +64,18 @@ sub on_private_message {
 sub osd_show {
     my ($title, $text) = @_;
 
-    # Escape our message so we don't break kdialog
+    # Escape our title & message so we don't break kdialog
     $title =~ s/\\/\\\\/g;
-    $text =~ s/\\/\\\\/g;
+    $title =~ s/&/&amp;/g;
+    $title =~ s/</&lt;/g;
+    $title =~ s/>/&gt;/g;
 
+    $text =~ s/\\/\\\\/g;
+    $text =~ s/&/&amp;/g;
+    $text =~ s/</&lt;/g;
+    $text =~ s/>/&gt;/g;
+
+    # Pass it off to kdialog for display
     my @cmd_args = ("--title", "Irssi: $title", "--passivepopup", $text);
     system("kdialog", @cmd_args);
 
@@ -82,5 +90,6 @@ sub osd_show {
 Irssi::signal_add_last("print text", "on_print_text");
 Irssi::signal_add_last("message private", "on_private_message");
 
+osd_show("cOSD", "cOSD loaded successfully");
 
 #- end
