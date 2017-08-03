@@ -27,7 +27,7 @@ $VERSION = '1.0.0';
 #---------------------------------------------------------------------------------------------------
 
 sub on_print_text {
-    my ($dest, $message, $stripped) = @_;
+    my ($dest, $text, $stripped) = @_;
 
     # If the message is highlighted, display a notice
     if ($dest->{level} & MSGLEVEL_HILIGHT) {
@@ -40,10 +40,10 @@ sub on_print_text {
         my $nick = $server->{nick};
 
         # If we see a message we didn't send that includes our nick, generate a notification
-        if ($stripped =~ /\A<\s*[~&@%+]?([a-z_\-\[\]\\^{}|`][a-z0-9_\-\[\]\\^{}|`]*)>\s(.*)\z/i) {
-            my ($sender, $text) = ($1, $2);
+        if ($stripped =~ /\A<\s*[~&@%+]?([a-z_\-\[\]\\^{}|`][a-z0-9_\-\[\]\\^{}|`]*)>\s(.*\W\Q$nick\E(?:\W.*)?\z)/i) {
+            my ($sender, $message) = ($1, $2);
 
-            if ($sender ne $nick && $text =~ /(\A|\W)\Q$nick\E(\z|\W)/i) {
+            if ($sender ne $nick) {
                 osd_show("Mention in $dest->{target}", $stripped);
             }
         }
