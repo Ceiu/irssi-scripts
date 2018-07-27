@@ -79,6 +79,12 @@ sub osd_show {
     my @cmd_args = ("--title", "Irssi: $title", "--passivepopup", $text);
     system("kdialog", @cmd_args);
 
+    # Play a noise for the user (TODO: Make this optional/configurable)
+    my $volume = 4;
+    my $alert_src = "/usr/share/sounds/KDE-Im-Nudge.ogg";
+
+    system("play -q -v $volume $alert_src &");
+
     return;
 }
 
